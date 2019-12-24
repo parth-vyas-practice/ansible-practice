@@ -1,0 +1,13 @@
+---
+#
+# Playbook to install the ELK stack + Beats
+#
+- hosts: all
+  become: yes
+  roles:
+    - prerequisits
+    - filebeat-logstash
+  # vars required for filebeat
+  vars:
+    # use this var when filebeat send data to logstash
+    logstash_ip: localhost

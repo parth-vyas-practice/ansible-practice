@@ -1,0 +1,32 @@
+---
+#
+# Installing Filebeat
+#
+
+- name: Install Filebeat
+  yum:
+   name: filebeat
+   update_cache: yes
+
+- name: make filebeat config file empty 
+  shell: echo "" > /etc/filebeat/filebeat.yml
+
+- name: add configuration to filebeat.yml file
+  blockinfile:
+    path: /etc/filebeat/filebeat.yml
+    insertafter: '#migration.6_to_7.enabled:'
+    block: |
+      output.logstash:
+        hosts: ["{{ logstash_ip }}:5044"]
+      filebeat.modules:
+        - module: system
+          syslog:
+            enabled: true
+
+# # Starting Filebeat
+
+- name: Starting Filebeat
+  systemd:
+    name: filebeat
+    state: started
+    enabled: yes

@@ -1,0 +1,11 @@
+---
+#
+# Playbook to install the ELK stack + Beats
+#
+- hosts: all
+  become: yes
+  roles:
+    - prerequisits
+    - elasticsearch
+    - logstash
+

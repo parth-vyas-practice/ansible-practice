@@ -1,0 +1,16 @@
+# before execute this playbook filebeat installation playbook must be executed
+
+- hosts: all
+  become: yes
+  tasks:
+    - name: add rapid 7 logs path to filebeat
+      lineinfile:
+        path: /etc/filebeat/filebeat.yml
+        insertafter: 'paths:'
+        line: "    - /opt/rapid7/ir_agent/components/insight_agent/common/agent.log"
+
+    - name: Starting Filebeat
+      systemd:
+        name: filebeat
+        state: restarted
+        daemon_reload: yes

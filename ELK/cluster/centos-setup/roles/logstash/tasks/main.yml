@@ -1,0 +1,23 @@
+- name: install logstash
+  yum:
+    name: logstash
+
+- name: create beats input conf file
+  template:
+    src: beats-input.conf.j2
+    dest: /etc/logstash/conf.d/beats-input.conf
+    owner: root 
+    group: root
+
+- name: create elasticsearch output conf file
+  template:
+    src: elastic-search-output.conf.j2
+    dest: /etc/logstash/conf.d/elastic-search-output.conf
+    owner: root 
+    group: root
+
+- name: start and enable logstash
+  systemd:
+    name: logstash
+    state: started
+    enabled: yes

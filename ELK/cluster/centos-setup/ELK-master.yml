@@ -1,0 +1,14 @@
+---
+#
+# Playbook to install the ELK stack + Beats
+#
+- hosts: master_node
+  become: yes
+  roles:
+    - prerequisits
+    - elasticsearch-master
+    - logstash
+
+  # provide vars in inventory file
+  # vars:
+  #   master_node_private_ip: "{{ hostvars['master_node'].master_node_private_ip }}"

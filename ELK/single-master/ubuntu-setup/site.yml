@@ -1,0 +1,15 @@
+---
+#
+# Playbook to install the ELK stack + Beats
+#
+- hosts: all
+  become: yes
+  roles:
+  # - java
+  - elasticsearch
+  # - logstash
+  # vars:
+  #   ls_port: 5044
+  #   es_api_port: 9200
+
+

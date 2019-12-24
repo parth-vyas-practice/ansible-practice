@@ -1,0 +1,25 @@
+# Add the Java repo
+
+- name: install the latest version of java 8 openjdk
+  yum:
+    name: java-1.8.0-openjdk
+    state: latest
+    
+- name: install the latest version of java8 openjdk devel
+  yum:
+    name: java-1.8.0-openjdk-devel
+    state: latest
+  
+- name: install zip unzip vim curl wget
+  yum:
+    name: ["unzip","zip","vim","curl","wget"]
+    state: latest
+
+- name: Copy elasticsearch yum repo file
+  copy:
+    src=elasticsearch.repo
+    dest=/etc/yum.repos.d/elasticsearch.repo
+    owner=root
+    group=root
+    mode=0644
+

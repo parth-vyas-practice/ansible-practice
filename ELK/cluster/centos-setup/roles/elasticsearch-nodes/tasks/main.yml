@@ -1,0 +1,66 @@
+---
+#
+# Installing Elasticsearch
+#
+- name: Install elasticsearch
+  yum:
+    name: elasticsearch
+    update_cache: yes
+
+# line in file code
+- name: Updating the config file 
+  lineinfile:
+   destfile: /etc/elasticsearch/elasticsearch.yml
+   regexp: 'cluster.name:'
+   line: 'cluster.name: my-application'
+
+- name: Updating the config file
+  lineinfile:
+   destfile: /etc/elasticsearch/elasticsearch.yml
+   regexp: 'node.name:'
+   line: 'node.name: data1'
+
+- name: Updating the config file 
+  lineinfile:
+   destfile: /etc/elasticsearch/elasticsearch.yml
+   line: 'node.master: false'
+
+- name: Updating the config file 
+  lineinfile:
+   destfile: /etc/elasticsearch/elasticsearch.yml
+   line: 'node.data: true'
+
+- name: Updating the config file 
+  lineinfile:
+   destfile: /etc/elasticsearch/elasticsearch.yml
+   regexp: 'network.host:'
+   line: 'network.host: [_local_, {{ data_node_private_ip }}]'
+
+- name: Updating the port in config file 
+  lineinfile:
+   destfile: /etc/elasticsearch/elasticsearch.yml
+   regexp: 'http.port:'
+   line: 'http.port: 9200'
+
+- name: Updating the config file 
+  lineinfile:
+   destfile: /etc/elasticsearch/elasticsearch.yml
+   regexp: 'cluster.initial_master_nodes:'
+   line: 'cluster.initial_master_nodes: ["{{ master_node_private_ip }}"]'
+
+- name: Updating the config file 
+  lineinfile:
+   destfile: /etc/elasticsearch/elasticsearch.yml
+   line: 'discovery.seed_hosts: ["{{ master_node_private_ip }}"]'
+
+- name: enable and start elastic search service
+  systemd:
+    name: elasticsearch
+    state: started
+    enabled: yes
+
+- name: restart elasticsearch service and daemon_reload to pickup config changes
+  systemd:
+    state: restarted
+    daemon_reload: yes
+    name: crond

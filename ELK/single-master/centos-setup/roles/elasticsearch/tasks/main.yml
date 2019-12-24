@@ -1,0 +1,62 @@
+---
+#
+# Installing Elasticsearch
+#
+- name: Install elasticsearch
+  yum:
+    name: elasticsearch
+    update_cache: yes
+
+# line in file code
+- name: Updating the config file 
+  lineinfile:
+   destfile: /etc/elasticsearch/elasticsearch.yml
+   regexp: 'cluster.name:'
+   line: 'cluster.name: my-application'
+
+- name: Updating the config file
+  lineinfile:
+   destfile: /etc/elasticsearch/elasticsearch.yml
+   regexp: 'node.name:'
+   line: 'node.name: node-1'
+
+- name: Updating the config file 
+  lineinfile:
+   destfile: /etc/elasticsearch/elasticsearch.yml
+   line: 'node.master: true'
+
+- name: Updating the config file 
+  lineinfile:
+   destfile: /etc/elasticsearch/elasticsearch.yml
+   line: 'node.data: true'
+
+- name: Updating the config file 
+  lineinfile:
+   destfile: /etc/elasticsearch/elasticsearch.yml
+   line: 'discovery.seed_hosts: ["127.0.0.1"]'
+
+- name: Updating the config file 
+  lineinfile:
+   destfile: /etc/elasticsearch/elasticsearch.yml
+   regexp: 'network.host:'
+   line: 'network.host: 127.0.0.1'
+
+- name: Updating the config file 
+  lineinfile:
+   destfile: /etc/elasticsearch/elasticsearch.yml
+   regexp: 'cluster.initial_master_nodes:'
+   line: 'cluster.initial_master_nodes: ["node-1"]'
+
+# Update Elasticsearch port in config file 
+
+- name: Updating the port in config file 
+  lineinfile:
+   destfile: /etc/elasticsearch/elasticsearch.yml
+   regexp: 'http.port:'
+   line: 'http.port: 9200'
+
+- name: enable elastic search service
+  systemd:
+    name: elasticsearch
+    state: started
+    enabled: yes
